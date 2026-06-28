@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 28, 2026 at 10:20 AM
+-- Generation Time: Jun 28, 2026 at 10:19 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.2.31
 
@@ -35,6 +35,25 @@ CREATE TABLE `m_kabupaten` (
   `warna_kabupaten` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `m_kabupaten`
+--
+
+INSERT INTO `m_kabupaten` (`id_kabupaten`, `kd_kabupaten`, `nm_kabupaten`, `geojson_kabupaten`, `warna_kabupaten`) VALUES
+(1, '63.71', 'Kota Banjarmasin', '80280626054915.geojson', '#e218c7'),
+(2, '63.03', 'Kab. Banjar', '16280626071601.geojson', '#d52020'),
+(3, '63.72', 'Kota Banjarbaru', '47280626071621.geojson', '#1abc1c'),
+(4, '63.11', 'Kab. Balangan', '21280626071656.geojson', '#521967'),
+(5, '63.01', 'Kab. Tanah Laut ', '79280626083540.geojson', '#1a33ea'),
+(6, '63.02', 'Kab. Kotabaru', '74280626083610.geojson', '#44e218'),
+(7, '63.10', 'Kab. Tanah Bumbu', '3280626095157.geojson', '#05f5f5'),
+(8, '63.05', 'Kab. Tapin', '38280626095324.geojson', '#000000'),
+(9, '63.06', 'Kab. Hulu Sungai Selatan', '82280626095641.geojson', '#8b0e0e'),
+(10, '63.07', 'Kab. Hulu Sungai Tengah', '19280626095741.geojson', '#122daf'),
+(11, '63.08', 'Kab. Hulu Sungai Utara', '16280626095819.geojson', '#ecce09'),
+(12, '63.09', 'Kab. Tabalong', '12280626095857.geojson', '#00ff7b'),
+(13, '63.04', 'Kab. Barito Kuala', '82280626095939.geojson', '#18670e');
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +66,14 @@ CREATE TABLE `pengguna` (
   `kt_sandi` varchar(150) NOT NULL,
   `level` enum('Admin','User') NOT NULL DEFAULT 'User'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pengguna`
+--
+
+INSERT INTO `pengguna` (`id_pengguna`, `nm_pengguna`, `kt_sandi`, `level`) VALUES
+(1, 'admin', '$2a$12$GOGv2fD/a/yDEYJeIjFcROD5EcnHlseyuoemK2Wr2/K0AnI9FcS9a', 'Admin'),
+(2, 'user', '$2y$10$oNX.X8jgLhNclHBeI8ytT.1vODlml8.AN1Ieb.rSIChhCa1e7cS0S', 'User');
 
 -- --------------------------------------------------------
 
@@ -123,13 +150,13 @@ ALTER TABLE `t_hotspot`
 -- AUTO_INCREMENT for table `m_kabupaten`
 --
 ALTER TABLE `m_kabupaten`
-  MODIFY `id_kabupaten` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_kabupaten` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pengguna` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `t_firespot`
