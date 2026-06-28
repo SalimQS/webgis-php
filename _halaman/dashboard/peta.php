@@ -60,7 +60,7 @@ $setTemplate = false;
           ?>
               <label class="layer-row">
                 <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
-                <span class="swatch" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
+                <span class="swatch max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
               </label>
           <?php
             }
