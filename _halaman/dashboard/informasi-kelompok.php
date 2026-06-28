@@ -9,116 +9,91 @@ $setTemplate = false;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Informasi Kelompok — Karhutla Banjarmasin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 10px;
-    }
-
-    .team-card {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 22px;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      margin: 0 auto 14px;
-      background: var(--ink);
-      color: var(--khaki);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--display);
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
-
-    .team-card h3 {
-      font-family: var(--display);
-      font-size: 1.05rem;
-      margin: 0 0 4px;
-    }
-
-    .team-card .role {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ember-deep);
-      margin-bottom: 8px;
-    }
-
-    .team-card .nim {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--ink-soft);
-    }
-
-    .edit-hint {
-      margin-top: 36px;
-      border: 1px dashed var(--line);
-      border-radius: 4px;
-      padding: 16px 18px;
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-    }
-  </style>
 </head>
 
 <body>
 
   <?php include __DIR__ . '/navbar.php'; ?>
 
-  <section>
+  <section class="max-w-7xl mx-auto px-6 py-12">
+
     <div class="section-head">
       <div class="eyebrow">Informasi Kelompok</div>
       <h2>Tim Pengembang</h2>
     </div>
 
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="avatar">A</div>
-        <h3>Nama Anggota 1</h3>
-        <div class="role">Ketua Kelompok</div>
-        <div class="nim">NIM. 0000000001</div>
+    <div class="flex flex-wrap justify-center gap-8 mt-10">
+
+      <!-- Card -->
+      <div class="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.4rem)] max-w-[380px] bg-[var(--paper)] border border-[var(--line)] rounded p-8 text-center transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <img src="assets/kelompok/salim.jpeg"
+          alt="Satria Salim"
+          class="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-[var(--line)]">
+
+        <h3>Satria Salim</h3>
+
+        <div class="font-[var(--mono)] text-sm text-[var(--ink-soft)] mt-2">
+          NPM. 2410010524
+        </div>
       </div>
-      <div class="team-card">
-        <div class="avatar">B</div>
-        <h3>Nama Anggota 2</h3>
-        <div class="role">Pengembang Sistem</div>
-        <div class="nim">NIM. 0000000002</div>
+
+      <!-- Card -->
+      <div class="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.4rem)] max-w-[380px] bg-[var(--paper)] border border-[var(--line)] rounded p-8 text-center transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <img src="assets/kelompok/razy.jpeg"
+          alt="Razy Saputra"
+          class="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-[var(--line)]">
+
+        <h3>Razy Saputra</h3>
+
+        <div class="font-[var(--mono)] text-sm text-[var(--ink-soft)] mt-2">
+          NPM. 2410010317
+        </div>
       </div>
-      <div class="team-card">
-        <div class="avatar">C</div>
-        <h3>Nama Anggota 3</h3>
-        <div class="role">Analis Data</div>
-        <div class="nim">NIM. 0000000003</div>
+
+      <!-- Card -->
+      <div class="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.4rem)] max-w-[380px] bg-[var(--paper)] border border-[var(--line)] rounded p-8 text-center transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <img src="assets/kelompok/iki.jpeg"
+          alt="M. Miftahul Rizky"
+          class="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-[var(--line)]">
+
+        <h3>M. Miftahul Rizky</h3>
+
+        <div class="font-[var(--mono)] text-sm text-[var(--ink-soft)] mt-2">
+          NPM. 2410010509
+        </div>
       </div>
+
+      <!-- Card -->
+      <div class="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.4rem)] max-w-[380px] bg-[var(--paper)] border border-[var(--line)] rounded p-8 text-center transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <img src="assets/kelompok/fathur.jpeg"
+          alt="Fathur Rahman"
+          class="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-[var(--line)]">
+
+        <h3>Fathur Rahman</h3>
+
+        <div class="font-[var(--mono)] text-sm text-[var(--ink-soft)] mt-2">
+          NPM. 2410010410
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.4rem)] max-w-[380px] bg-[var(--paper)] border border-[var(--line)] rounded p-8 text-center transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <img src="assets/kelompok/adi.jpeg"
+          alt="Adi Rizaldi"
+          class="w-24 h-24 rounded-full object-cover mx-auto mb-5 border-2 border-[var(--line)]">
+
+        <h3>Adi Rizaldi</h3>
+
+        <div class="font-[var(--mono)] text-sm text-[var(--ink-soft)] mt-2">
+          NPM. 2410010297
+        </div>
+      </div>
+
     </div>
 
-    <div class="edit-hint">
-      Halaman ini placeholder — ganti nama, peran, NIM, dan foto/avatar sesuai anggota kelompok yang sebenarnya.
-      Tambahkan kartu baru dengan menyalin blok <code>.team-card</code> di atas.
-    </div>
-  </section>
-
-  <section>
-    <div class="section-head">
-      <div class="eyebrow">Tentang Proyek Ini</div>
-      <h2>Catatan Pengembangan</h2>
-    </div>
-    <p style="color:var(--ink-soft);max-width:700px;">
-      Tuliskan di sini latar belakang kelompok, pembagian tugas, mata kuliah/tugas akhir terkait,
-      serta dosen pembimbing jika perlu dicantumkan. Bagian ini bebas diisi sesuai kebutuhan.
-    </p>
   </section>
 
   <footer>
