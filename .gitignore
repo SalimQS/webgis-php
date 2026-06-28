@@ -2,5 +2,6 @@
 /.idea
 /.vscode
 /.vagrant
+/assets/unggah
 env.php
 composer.lock
