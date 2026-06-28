@@ -35,22 +35,22 @@ $setTemplate = false;
       <div class="sidebar-card">
         <div class="sidebar-card-title">Base Map</div>
         <div class="control-group flex flex-col">
-          <label class="radio-row mt-2">
+          <label class="radio-row">
             <input type="radio" name="base-layer" value="osm" checked>
             <span class="control-label-text">OpenStreetMap</span>
           </label>
-          <label class="radio-row mt-2">
+          <label class="radio-row">
             <input type="radio" name="base-layer" value="cycle">
             <span class="control-label-text">OpenCycleMap</span>
           </label>
-          <label class="radio-row mt-2">
+          <label class="radio-row">
             <input type="radio" name="base-layer" value="outdoors">
             <span class="control-label-text">Outdoors</span>
           </label>
         </div>
       </div>
 
-      <div class="sidebar-card mt-5">
+      <div class="sidebar-card mt-2">
         <div class="sidebar-card-title">Layer Kabupaten</div>
         <div class="panel-layers">
           <?php
@@ -58,10 +58,10 @@ $setTemplate = false;
           if ($db->count > 0) {
             foreach ($getKabupaten as $row) {
           ?>
-              <label class="layer-row">
-                <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
-                <span class="swatch max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
-              </label>
+            <label class="layer-row">
+              <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
+              <span class="swatch min-w-4 max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
+            </label>
           <?php
             }
           }
