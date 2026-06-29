@@ -50,13 +50,14 @@
         <li class="treeview">
           <a href="#">
             <i class="fa fa-sitemap"></i>
-            <span>Data Hotspot</span>
+            <span>Data Titik Lokasi</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=url('hotspot')?>"><i class="fa fa-circle-o"></i> Hotspot</a></li>
+            <li><a href="<?=url('hotspot')?>"><i class="fa fa-circle-o"></i> Data Titik Rawan Terbakar</a></li>
+            <li><a href="<?=url('firespot')?>"><i class="fa fa-circle-o"></i> Data Titik Kebakaran</a></li>
           </ul>
         </li>
 

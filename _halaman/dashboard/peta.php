@@ -51,6 +51,24 @@ $setTemplate = false;
       </div>
 
       <div class="sidebar-card mt-2">
+        <div class="sidebar-card-title">Layer Titik</div>
+
+        <div class="panel-layers">
+          <label class="layer-row">
+            <input type="checkbox" id="toggle-hotspot" checked>
+            <span class="swatch min-w-4 max-w-4 bg-red-500"></span>
+            TItik Rawan Terbakar
+          </label>
+
+          <label class="layer-row">
+            <input type="checkbox" id="toggle-firespot" checked>
+            <span class="swatch min-w-4 max-w-4 bg-orange-500"></span>
+            Titik Kebakaran
+          </label>
+        </div>
+      </div>
+
+      <div class="sidebar-card mt-2">
         <div class="sidebar-card-title">Layer Kabupaten</div>
         <div class="panel-layers">
           <?php
@@ -58,10 +76,10 @@ $setTemplate = false;
           if ($db->count > 0) {
             foreach ($getKabupaten as $row) {
           ?>
-            <label class="layer-row">
-              <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
-              <span class="swatch min-w-4 max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
-            </label>
+              <label class="layer-row">
+                <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
+                <span class="swatch min-w-4 max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
+              </label>
           <?php
             }
           }
@@ -139,8 +157,23 @@ $setTemplate = false;
         $lng = floatval($row->lng);
         if ($lat != 0 && $lng != 0) {
           $iconUrl = ($row->marker == '' ? assets('icons/marker.png') : assets('unggah/marker/' . $row->marker));
-          $popup = addslashes('<strong>' . $row->lokasi . '</strong><br><em>' . $row->keterangan . '</em><br>Kabupaten: ' . ($row->nm_kabupaten ?? '') . '<br>Tanggal: ' . $row->tanggal);
-          $arrayHotspot[] = "L.marker([$lat, $lng], {icon: L.icon({iconUrl: '$iconUrl', iconSize: [30, 40], iconAnchor: [15, 40]})}).bindPopup('{$popup}')";
+          $popup = addslashes(
+            '<strong>Titik Rawan Terbakar</strong><br>' .
+              'Tempat: ' . ($row->lokasi ?? '-') . '<br>' .
+              'Keterangan: ' . ($row->keterangan ?? '-') . '<br>' .
+              'Kabupaten: ' . ($row->nm_kabupaten ?? '') . '<br>' .
+              'Tanggal: ' . $row->tanggal
+          );
+
+          $arrayHotspot[] = "
+            L.marker([$lat, $lng], {
+                icon: L.icon({
+                    iconUrl: '$iconUrl',
+                    iconSize: [30, 40],
+                    iconAnchor: [15, 40]
+                })
+            }).bindPopup('{$popup}')
+          ";
         }
       }
     }
@@ -149,6 +182,52 @@ $setTemplate = false;
       <?= isset($arrayHotspot) ? implode(",\n      ", $arrayHotspot) : '' ?>
     ]).addTo(map);
 
+    // Build firespot icon markers from database table t_firespot
+    <?php
+    $arrayFirespot = array();
+    $db->join('m_kabupaten b', 'a.id_kabupaten=b.id_kabupaten', 'LEFT');
+    $firespotRows = $db->ObjectBuilder()->get('t_firespot a');
+
+    if ($db->count > 0) {
+      foreach ($firespotRows as $row) {
+        $lat = floatval($row->lat);
+        $lng = floatval($row->lng);
+
+        if ($lat != 0 && $lng != 0) {
+
+          $iconUrl = ($row->marker == ''
+            ? assets('icons/marker2.png')
+            : assets('unggah/marker/' . $row->marker));
+
+          $popup = addslashes(
+            '<strong>Titik Kebakaran</strong>' .
+              '<br>Tempat: ' . ($row->lokasi ?? '-') .
+              '<br>Kabupaten: ' . ($row->nm_kabupaten ?? '') .
+              '<br>Status: ' . $row->status .
+              '<br>Luas: ' . $row->luas_terbakar . ' Ha' .
+              '<br>Penyebab: ' . $row->penyebab .
+              '<br>Tanggal: ' . $row->tanggal .
+              '<br><em>' . $row->keterangan . '</em>'
+          );
+
+          $arrayFirespot[] =
+            "L.marker([$lat, $lng], {
+                    icon: L.icon({
+                        iconUrl: '$iconUrl',
+                        iconSize: [30, 40],
+                        iconAnchor: [15, 40]
+                    })
+                }).bindPopup('{$popup}')";
+        }
+      }
+    }
+    ?>
+
+    var firespotLayer = L.layerGroup([
+      <?= isset($arrayFirespot) ? implode(",\n      ", $arrayFirespot) : '' ?>
+    ]).addTo(map);
+
+    // layer kabupaten
     <?php
     $getKabupaten = $db->ObjectBuilder()->get('m_kabupaten');
     if ($db->count > 0) {
@@ -190,7 +269,8 @@ $setTemplate = false;
       });
     });
 
-    document.getElementById('toggle-titikapi').addEventListener('change', function() {
+    // Toggle Hotspot
+    document.getElementById('toggle-hotspot').addEventListener('change', function() {
       if (this.checked) {
         map.addLayer(hotspotLayer);
       } else {
@@ -198,11 +278,12 @@ $setTemplate = false;
       }
     });
 
-    document.getElementById('toggle-terbakar').addEventListener('change', function() {
+    // Toggle Fire Spot
+    document.getElementById('toggle-firespot').addEventListener('change', function() {
       if (this.checked) {
-        map.addLayer(terbakarLayer);
+        map.addLayer(firespotLayer);
       } else {
-        map.removeLayer(terbakarLayer);
+        map.removeLayer(firespotLayer);
       }
     });
 
