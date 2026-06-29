@@ -46,7 +46,6 @@
           </ul>
         </li>
         <?php endif ?>
-
         <li class="treeview">
           <a href="#">
             <i class="fa fa-sitemap"></i>
@@ -60,6 +59,13 @@
             <li><a href="<?=url('firespot')?>"><i class="fa fa-circle-o"></i> Data Titik Kebakaran</a></li>
           </ul>
         </li>
+        <?php if ($session->get('level')=='Admin'): ?>
+        <li>
+          <a href="<?=url('report')?>">
+            <i class="fa fa-file-pdf-o"></i> <span>Report</span>
+          </a>
+        </li>
+        <?php endif ?>
 
         <li class="treeview">
           <a href="#">

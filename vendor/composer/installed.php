@@ -1,51 +1,108 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => 'nshid/webgis-php',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'ac67162bea597803af48ca345588664e4069e994',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => '53e778fe6321575abdd4af10307dff4f5b94883a',
-    'name' => 'nshid/webgis-php',
-  ),
-  'versions' => 
-  array (
-    'josantonius/session' => 
-    array (
-      'pretty_version' => '1.1.8',
-      'version' => '1.1.8.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '08b09ad43927d172963d15da29259bcdf90a8f43',
+    'versions' => array(
+        'dompdf/dompdf' => array(
+            'pretty_version' => 'v3.1.5',
+            'version' => '3.1.5.0',
+            'reference' => 'f11ead23a8a76d0ff9bbc6c7c8fd7e05ca328496',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/dompdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'dompdf/php-font-lib' => array(
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => 'a6e9a688a2a80016ac080b97be73d3e10c444c9a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/php-font-lib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'dompdf/php-svg-lib' => array(
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => '8259ffb930817e72b1ff1caef5d226501f3dfeb1',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dompdf/php-svg-lib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'josantonius/session' => array(
+            'pretty_version' => '1.1.9',
+            'version' => '1.1.9.0',
+            'reference' => 'b393eb90c249ef0596e79e7cf9e5de39bad6fe91',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../josantonius/session',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'joshcam/mysqli-database-class' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '16564ba0717fad64617a1ce4a8d3f9b90e68c7c2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../joshcam/mysqli-database-class',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
+        'masterminds/html5' => array(
+            'pretty_version' => '2.10.1',
+            'version' => '2.10.1.0',
+            'reference' => 'fd5018f6815fff903946d0564977b44ce8010e29',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../masterminds/html5',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nshid/webgis-php' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'ac67162bea597803af48ca345588664e4069e994',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'sabberworm/php-css-parser' => array(
+            'pretty_version' => 'v9.4.0',
+            'version' => '9.4.0.0',
+            'reference' => 'fd3bf9fb173e0df649bc4e3e0d088a1b2417c08f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sabberworm/php-css-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'thecodingmachine/safe' => array(
+            'pretty_version' => 'v3.4.0',
+            'version' => '3.4.0.0',
+            'reference' => '705683a25bacf0d4860c7dea4d7947bfd09eea19',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../thecodingmachine/safe',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'verot/class.upload.php' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '9c8a04bdcc82ff426f7628acd4119f8d2c408d7e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../verot/class.upload.php',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
     ),
-    'joshcam/mysqli-database-class' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '16564ba0717fad64617a1ce4a8d3f9b90e68c7c2',
-    ),
-    'nshid/webgis-php' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '53e778fe6321575abdd4af10307dff4f5b94883a',
-    ),
-    'verot/class.upload.php' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '9c8a04bdcc82ff426f7628acd4119f8d2c408d7e',
-    ),
-  ),
 );
