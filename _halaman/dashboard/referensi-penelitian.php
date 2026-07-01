@@ -8,7 +8,7 @@ $setTemplate = false;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Informasi Penelitian — Karhutla Banjarmasin</title>
+  <title>Referensi Penelitian — Karhutla Banjarmasin</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     .info-shell {
@@ -104,7 +104,7 @@ $setTemplate = false;
 
   <section class="info-shell">
     <div class="section-head">
-      <div class="eyebrow">Informasi Penelitian</div>
+      <div class="eyebrow">Referensi Penelitian</div>
       <h2>Pemetaan Daerah Potensi Rawan Kebakaran Hutan dan Lahan Menggunakan Sistem Informasi Geografis (SIG) di Kabupaten Kota Waingapu Kabupaten Sumba Timur</h2>
     </div>
 

@@ -6,9 +6,9 @@ $title = "Report";
 $judul = $title;
 $url = 'report';
 
-if ($session->get('level') != 'Admin') {
-    redirect(url('beranda'));
-}
+// if ($session->get('level') != 'Admin') {
+//     redirect(url('beranda'));
+// }
 
 function report_escape($value)
 {

@@ -7,7 +7,7 @@ $sections = [
     'peta' => 'Peta Interaktif',
     'statistik' => 'Statistik',
     'metodologi' => 'Metodologi',
-    'informasi-penelitian' => 'Informasi Penelitian',
+    'referensi-penelitian' => 'Referensi Penelitian',
     'informasi-kelompok' => 'Kelompok',
 ];
 $logged = isset($session) && $session->get('logged') === true;
