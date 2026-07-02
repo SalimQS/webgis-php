@@ -201,6 +201,10 @@ a {
   background: rgba(255, 255, 255, 0.2);
 }
 
+.kelompok-content-wrapper {
+  min-height: 80vh;
+}
+
 .health-card {
   padding: 28px;
   color: #fff;
