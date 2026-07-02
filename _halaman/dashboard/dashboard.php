@@ -1,5 +1,17 @@
 <?php
 $setTemplate = false;
+
+function dash_e($value)
+{
+  return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
+if ($q != '') {
+  $db->where('nama', '%' . $q . '%', 'LIKE');
+}
+$tempatLayanan = $db->ObjectBuilder()->get('tempat_layanan');
+$jumlahTempat = count($tempatLayanan);
 ?>
 
 <!DOCTYPE html>
@@ -8,40 +20,32 @@ $setTemplate = false;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peta Rawan Karhutla — Kota Banjarmasin</title>
+  <title>Layanan Kesehatan Disabilitas Kota Banjarmasin</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-
   <?php include __DIR__ . '/navbar.php'; ?>
 
   <div class="hero-container">
     <section class="hero">
       <div>
-        <div class="eyebrow">Kota Banjarmasin · 2026</div>
-        <h1>Memetakan tanah yang<br><em>siap terbakar</em> sebelum apinya datang.</h1>
-        <p class="lead">Curah hujan 963 mm/tahun, padang rumput seluas 8.586 Ha, dan 73 titik api dalam satu tahun.
-          Data ini diolah dengan metode skoring &amp; pembobotan BNPB untuk memetakan tingkat kerawanan kebakaran hutan dan lahan per desa/kelurahan.</p>
+        <div class="eyebrow">Kota Banjarmasin 2026</div>
+        <h1>Pemetaan layanan kesehatan bagi <em>penyandang disabilitas</em>.</h1>
+        <p class="lead">Aplikasi ini membantu masyarakat menemukan rumah sakit, puskesmas, klinik, dan komunitas yang menyediakan layanan terkait disabilitas di Kota Banjarmasin.</p>
         <div style="display:flex;gap:12px;">
-          <a href="?halaman=dashboard&section=peta" class="btn">Buka Peta Interaktif →</a>
-          <a href="?halaman=dashboard&section=metodologi" class="btn ghost">Lihat Metodologi</a>
+          <a href="?halaman=dashboard&section=peta" class="btn">Buka Peta Layanan</a>
+          <a href="#daftar-tempat" class="btn ghost">Cari Tempat</a>
         </div>
       </div>
 
-      <div class="scorch-card">
-        <div class="label">Distribusi Potensi Kerawanan · 9.385 Ha</div>
-
-        <div class="scorch-bar">
-          <span class="tinggi" style="width:49%"></span>
-          <span class="sedang" style="width:31%"></span>
-          <span class="rendah" style="width:20%"></span>
-        </div>
-
-        <div class="scorch-legend">
-          <div><span class="dot tinggi"></span>Tinggi · 4.590 Ha (49%)</div>
-          <div><span class="dot sedang"></span>Sedang · 2.855 Ha (31%)</div>
-          <div><span class="dot rendah"></span>Rendah · 1.940 Ha (20%)</div>
+      <div class="health-card">
+        <div class="label">Ringkasan Data Layanan</div>
+        <div class="stat" style="font-size:3rem;color:#fff"><?= $jumlahTempat ?></div>
+        <div class="service-legend">
+          <div><span class="dot tinggi"></span>Rumah Sakit</div>
+          <div><span class="dot sedang"></span>Puskesmas</div>
+          <div><span class="dot rendah"></span>Klinik dan Komunitas</div>
         </div>
       </div>
     </section>
@@ -51,90 +55,66 @@ $setTemplate = false;
 
   <section>
     <div class="section-head">
-      <div class="eyebrow">Wilayah Analisis</div>
-      <h2>Data spasial penyusun peta kerawanan Kota Banjarmasin</h2>
+      <div class="eyebrow">Informasi Aplikasi</div>
+      <h2>Data tempat layanan ditampilkan sebagai marker pada peta WebGIS</h2>
     </div>
 
     <div class="grid-3">
-
       <div class="card">
-        <span class="tag">Administrasi</span>
-        <h3>5 Kecamatan</h3>
-        <p>Wilayah penelitian meliputi seluruh kecamatan di Kota Banjarmasin sebagai satu kesatuan area analisis.</p>
-        <div class="stat">5<span style="font-size:.9rem;color:var(--ink-soft)"> Kecamatan</span></div>
+        <span class="tag">Objek GIS</span>
+        <h3>Tempat Layanan</h3>
+        <p>Marker peta berasal dari data tempat layanan kesehatan yang memiliki layanan bagi penyandang disabilitas.</p>
+        <div class="stat"><?= $jumlahTempat ?><span style="font-size:.9rem;color:var(--ink-soft)"> Tempat</span></div>
       </div>
 
       <div class="card">
-        <span class="tag">Parameter Analisis</span>
-        <h3>Overlay SIG</h3>
-        <p>Peta kerawanan disusun melalui proses overlay beberapa parameter spasial menggunakan Sistem Informasi Geografis (SIG).</p>
-        <div class="stat">3<span style="font-size:.9rem;color:var(--ink-soft)"> Parameter</span></div>
+        <span class="tag">Kategori</span>
+        <h3>Fasilitas dan Komunitas</h3>
+        <p>Kategori meliputi rumah sakit, puskesmas, klinik, dan komunitas disabilitas.</p>
+        <div class="stat">4<span style="font-size:.9rem;color:var(--ink-soft)"> Kategori</span></div>
       </div>
 
       <div class="card">
-        <span class="tag">Output</span>
-        <h3>Peta Kerawanan</h3>
-        <p>Hasil analisis menghasilkan klasifikasi wilayah dengan tingkat kerawanan tinggi, sedang, dan rendah.</p>
-        <div class="stat">3<span style="font-size:.9rem;color:var(--ink-soft)"> Kelas Risiko</span></div>
+        <span class="tag">Detail</span>
+        <h3>Informasi Lengkap</h3>
+        <p>Setiap tempat memiliki halaman detail berisi foto, kontak, lokasi, dokter, layanan, dan penanggung jawab.</p>
+        <div class="stat">1<span style="font-size:.9rem;color:var(--ink-soft)"> Halaman Detail</span></div>
       </div>
-
     </div>
   </section>
 
-  <section>
-
+  <section id="daftar-tempat">
     <div class="section-head">
-      <div class="eyebrow">Kecamatan Kota Banjarmasin</div>
-      <h2>Ringkasan wilayah yang dianalisis</h2>
+      <div class="eyebrow">Pencarian Tempat</div>
+      <h2>Daftar tempat layanan kesehatan</h2>
     </div>
+
+    <form method="get" action="<?= base_url() ?>" style="display:flex;gap:10px;margin-bottom:22px;max-width:620px">
+      <input type="hidden" name="halaman" value="dashboard">
+      <input type="text" name="q" value="<?= dash_e($q) ?>" placeholder="Cari nama tempat" style="flex:1;padding:13px 14px;border:1px solid var(--line);background:var(--paper)">
+      <button type="submit" class="btn">Cari</button>
+    </form>
 
     <div class="grid-3">
-
-      <div class="card">
-        <span class="tag">Kecamatan</span>
-        <h3>Banjarmasin Selatan</h3>
-        <p>Memiliki kawasan permukiman padat serta beberapa area vegetasi yang menjadi bagian dari analisis kerawanan.</p>
-      </div>
-
-      <div class="card">
-        <span class="tag">Kecamatan</span>
-        <h3>Banjarmasin Timur</h3>
-        <p>Wilayah berkembang dengan kombinasi kawasan permukiman, ruang terbuka hijau, dan badan air.</p>
-      </div>
-
-      <div class="card">
-        <span class="tag">Kecamatan</span>
-        <h3>Banjarmasin Barat</h3>
-        <p>Didominasi kawasan permukiman dan aktivitas perdagangan dengan beberapa ruang terbuka sebagai objek analisis.</p>
-      </div>
-
-      <div class="card">
-        <span class="tag">Kecamatan</span>
-        <h3>Banjarmasin Tengah</h3>
-        <p>Pusat aktivitas perkotaan dengan dominasi kawasan terbangun dan ruang terbuka yang terbatas.</p>
-      </div>
-
-      <div class="card">
-        <span class="tag">Kecamatan</span>
-        <h3>Banjarmasin Utara</h3>
-        <p>Memiliki kawasan permukiman, lahan terbuka, dan daerah tepian sungai yang menjadi bagian analisis spasial.</p>
-      </div>
-
-      <div class="card">
-        <span class="tag">Analisis SIG</span>
-        <h3>Keseluruhan Kota</h3>
-        <p>Seluruh Kecamatan digabungkan dalam proses overlay untuk menghasilkan peta potensi rawan kebakaran tingkat kota.</p>
-      </div>
-
+      <?php if (count($tempatLayanan) == 0) { ?>
+        <div class="card"><h3>Data belum tersedia</h3><p>Silakan cek kembali setelah admin menambahkan data tempat layanan.</p></div>
+      <?php } ?>
+      <?php foreach ($tempatLayanan as $row) { ?>
+        <div class="card">
+          <span class="tag"><?= dash_e($row->kategori) ?></span>
+          <h3><?= dash_e($row->nama) ?></h3>
+          <p><?= dash_e($row->alamat) ?></p>
+          <p style="margin-top:10px"><?= dash_e($row->telepon) ?></p>
+          <a href="<?= url('dashboard') ?>&section=detail&id=<?= $row->id ?>" class="btn" style="margin-top:16px">Lihat Detail</a>
+        </div>
+      <?php } ?>
     </div>
-
   </section>
 
   <footer>
-    <span>Penelitian Fisika, Universitas Nusa Cendana — 2024</span>
-    <span>Technologia: Jurnal Ilmiah Vol.15 No.4</span>
+    <span>WebGIS Layanan Kesehatan Disabilitas Kota Banjarmasin</span>
+    <span>PHP Native dan Leaflet</span>
   </footer>
-
 </body>
 
 </html>

@@ -1,5 +1,17 @@
 <?php
 $setTemplate = false;
+
+function peta_e($value)
+{
+  return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+
+$kategori = isset($_GET['kategori']) ? $_GET['kategori'] : 'Semua';
+$kategoriList = array('Semua', 'Rumah Sakit', 'Puskesmas', 'Klinik', 'Komunitas Disabilitas');
+if ($kategori != 'Semua') {
+  $db->where('kategori', $kategori);
+}
+$rows = $db->ObjectBuilder()->get('tempat_layanan');
 ?>
 
 <!DOCTYPE html>
@@ -8,24 +20,9 @@ $setTemplate = false;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peta Interaktif — Karhutla Banjarmasin</title>
+  <title>Peta Layanan Kesehatan Disabilitas</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="assets/css/style.css">
-  <style type="text/css">
-    #map,
-    #mapid {
-      height: 100%;
-    }
-
-    .icon {
-      display: inline-block;
-      margin: 2px;
-      height: 16px;
-      width: 16px;
-      background-color: #ccc;
-    }
-  </style>
 </head>
 
 <body>
@@ -33,267 +30,58 @@ $setTemplate = false;
   <div class="map-shell">
     <aside class="map-sidebar">
       <div class="sidebar-card">
-        <div class="sidebar-card-title">Base Map</div>
-        <div class="control-group flex flex-col">
-          <label class="radio-row">
-            <input type="radio" name="base-layer" value="osm" checked>
-            <span class="control-label-text">OpenStreetMap</span>
-          </label>
-          <label class="radio-row">
-            <input type="radio" name="base-layer" value="cycle">
-            <span class="control-label-text">OpenCycleMap</span>
-          </label>
-          <label class="radio-row">
-            <input type="radio" name="base-layer" value="outdoors">
-            <span class="control-label-text">Outdoors</span>
-          </label>
-        </div>
+        <div class="sidebar-card-title">Filter Kategori</div>
+        <form method="get" action="<?= base_url() ?>" class="control-group">
+          <input type="hidden" name="halaman" value="dashboard">
+          <input type="hidden" name="section" value="peta">
+          <select name="kategori" onchange="this.form.submit()" style="width:100%;padding:12px;border-radius:8px">
+            <?php foreach ($kategoriList as $item) { ?>
+              <option value="<?= peta_e($item) ?>" <?= $kategori == $item ? 'selected' : '' ?>><?= peta_e($item) ?></option>
+            <?php } ?>
+          </select>
+        </form>
       </div>
-
-      <div class="sidebar-card mt-2">
-        <div class="sidebar-card-title">Layer Titik</div>
-
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Daftar Tempat</div>
         <div class="panel-layers">
-          <label class="layer-row">
-            <input type="checkbox" id="toggle-hotspot" checked>
-            <span class="swatch min-w-4 max-w-4 bg-red-500"></span>
-            TItik Rawan Terbakar
-          </label>
-
-          <label class="layer-row">
-            <input type="checkbox" id="toggle-firespot" checked>
-            <span class="swatch min-w-4 max-w-4 bg-orange-500"></span>
-            Titik Kebakaran
-          </label>
-        </div>
-      </div>
-
-      <div class="sidebar-card mt-2">
-        <div class="sidebar-card-title">Layer Kabupaten</div>
-        <div class="panel-layers">
-          <?php
-          $getKabupaten = $db->ObjectBuilder()->get('m_kabupaten');
-          if ($db->count > 0) {
-            foreach ($getKabupaten as $row) {
-          ?>
-              <label class="layer-row">
-                <input type="checkbox" class="toggle-kabupaten" data-layer-id="kab-<?= $row->id_kabupaten ?>" checked>
-                <span class="swatch min-w-4 max-w-4" style="background:<?= $row->warna_kabupaten ?>"></span> <?= $row->nm_kabupaten ?>
-              </label>
-          <?php
-            }
-          }
-          ?>
+          <?php foreach ($rows as $row) { ?>
+            <a class="layer-row" href="<?= url('dashboard') ?>&section=detail&id=<?= $row->id ?>">
+              <span class="swatch" style="background:#2f80ed"></span>
+              <span><?= peta_e($row->nama) ?><br><small><?= peta_e($row->kategori) ?></small></span>
+            </a>
+          <?php } ?>
         </div>
       </div>
     </aside>
-
     <div id="map"></div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="<?= assets('js/leaflet.ajax.js') ?>"></script>
-  <script src="<?= assets('js/Leaflet.heat-gh-pages/dist/leaflet-heat.js') ?>"></script>
   <script>
-    function iconByName(name) {
-      return '<i class="icon" style="background-color:' + name + ';border-radius:50%"></i>';
-    }
+    var map = L.map('map').setView([-3.3186067, 114.5943784], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-    function popUp(feature, layer) {
-      if (!feature || !feature.properties || !feature.geometry || feature.geometry.type !== 'Point') {
-        return;
+    var bounds = [];
+    <?php foreach ($rows as $row) {
+      $lat = (float) $row->latitude;
+      $lng = (float) $row->longitude;
+      if ($lat == 0 || $lng == 0) {
+        continue;
       }
-      var out = [];
-      if (feature.properties['PROVINSI']) out.push('Provinsi: ' + feature.properties['PROVINSI']);
-      if (feature.properties['KABUPATEN']) out.push('Kabupaten: ' + feature.properties['KABUPATEN']);
-      layer.bindPopup(out.join('<br />'));
-    }
-
-    function featureToMarker(feature, latlng) {
-      return L.marker(latlng, {
-        icon: L.divIcon({
-          className: 'marker-' + (feature.properties ? feature.properties.amenity : ''),
-          html: iconByName(feature.properties ? feature.properties.amenity : '#555'),
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41]
-        })
-      });
-    }
-
-    var map = L.map('map').setView([-3.3285005196803144, 114.595341038577], 11);
-
-    var baseLayers = {
-      osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }),
-      cycle: L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'),
-      outdoors: L.tileLayer('http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png')
-    };
-
-    var currentBaseLayer = baseLayers.osm;
-    currentBaseLayer.addTo(map);
-
-    function setBaseLayer(key) {
-      if (!baseLayers[key] || baseLayers[key] === currentBaseLayer) return;
-      map.removeLayer(currentBaseLayer);
-      currentBaseLayer = baseLayers[key];
-      map.addLayer(currentBaseLayer);
-    }
-
-    var kabupatenLayers = L.layerGroup().addTo(map);
-    var kabupatenLayerMap = {};
-    var terbakarLayer = L.layerGroup();
-
-    // Build hotspot icon markers from database table t_hotspot
-    <?php
-    $arrayHotspot = array();
-    $db->join('m_kabupaten b', 'a.id_kabupaten=b.id_kabupaten', 'LEFT');
-    $hotspotRows = $db->ObjectBuilder()->get('t_hotspot a');
-    if ($db->count > 0) {
-      foreach ($hotspotRows as $row) {
-        $lat = floatval($row->lat);
-        $lng = floatval($row->lng);
-        if ($lat != 0 && $lng != 0) {
-          $iconUrl = ($row->marker == '' ? assets('icons/marker.png') : assets('unggah/marker/' . $row->marker));
-          $popup = addslashes(
-            '<strong>Titik Rawan Terbakar</strong><br>' .
-              'Tempat: ' . ($row->lokasi ?? '-') . '<br>' .
-              'Keterangan: ' . ($row->keterangan ?? '-') . '<br>' .
-              'Kabupaten: ' . ($row->nm_kabupaten ?? '') . '<br>' .
-              'Tanggal: ' . $row->tanggal
-          );
-
-          $arrayHotspot[] = "
-            L.marker([$lat, $lng], {
-                icon: L.icon({
-                    iconUrl: '$iconUrl',
-                    iconSize: [30, 40],
-                    iconAnchor: [15, 40]
-                })
-            }).bindPopup('{$popup}')
-          ";
-        }
-      }
-    }
+      $popup = '<strong>' . peta_e($row->nama) . '</strong><br>' .
+        peta_e($row->kategori) . '<br>' .
+        peta_e($row->alamat) . '<br>' .
+        '<a href="' . url('dashboard') . '&section=detail&id=' . $row->id . '">Lihat Detail</a>';
     ?>
-    var hotspotLayer = L.layerGroup([
-      <?= isset($arrayHotspot) ? implode(",\n      ", $arrayHotspot) : '' ?>
-    ]).addTo(map);
+      L.marker([<?= $lat ?>, <?= $lng ?>]).addTo(map).bindPopup(<?= json_encode($popup) ?>);
+      bounds.push([<?= $lat ?>, <?= $lng ?>]);
+    <?php } ?>
 
-    // Build firespot icon markers from database table t_firespot
-    <?php
-    $arrayFirespot = array();
-    $db->join('m_kabupaten b', 'a.id_kabupaten=b.id_kabupaten', 'LEFT');
-    $firespotRows = $db->ObjectBuilder()->get('t_firespot a');
-
-    if ($db->count > 0) {
-      foreach ($firespotRows as $row) {
-        $lat = floatval($row->lat);
-        $lng = floatval($row->lng);
-
-        if ($lat != 0 && $lng != 0) {
-
-          $iconUrl = ($row->marker == ''
-            ? assets('icons/marker2.png')
-            : assets('unggah/marker/' . $row->marker));
-
-          $popup = addslashes(
-            '<strong>Titik Kebakaran</strong>' .
-              '<br>Tempat: ' . ($row->lokasi ?? '-') .
-              '<br>Kabupaten: ' . ($row->nm_kabupaten ?? '') .
-              '<br>Status: ' . $row->status .
-              '<br>Luas: ' . $row->luas_terbakar . ' Ha' .
-              '<br>Penyebab: ' . $row->penyebab .
-              '<br>Tanggal: ' . $row->tanggal .
-              '<br><em>' . $row->keterangan . '</em>'
-          );
-
-          $arrayFirespot[] =
-            "L.marker([$lat, $lng], {
-                    icon: L.icon({
-                        iconUrl: '$iconUrl',
-                        iconSize: [30, 40],
-                        iconAnchor: [15, 40]
-                    })
-                }).bindPopup('{$popup}')";
-        }
-      }
+    if (bounds.length > 0) {
+      map.fitBounds(bounds, { padding: [30, 30] });
     }
-    ?>
-
-    var firespotLayer = L.layerGroup([
-      <?= isset($arrayFirespot) ? implode(",\n      ", $arrayFirespot) : '' ?>
-    ]).addTo(map);
-
-    // layer kabupaten
-    <?php
-    $getKabupaten = $db->ObjectBuilder()->get('m_kabupaten');
-    if ($db->count > 0) {
-      foreach ($getKabupaten as $row) {
-    ?>
-        var myStyle<?= $row->id_kabupaten ?> = {
-          "color": "<?= $row->warna_kabupaten ?>",
-          "weight": 1,
-          "opacity": 1
-        };
-        var kabupatenLayer<?= $row->id_kabupaten ?> = new L.GeoJSON.AJAX(["<?= assets('unggah/geojson/' . $row->geojson_kabupaten) ?>"], {
-          onEachFeature: popUp,
-          style: myStyle<?= $row->id_kabupaten ?>,
-          pointToLayer: featureToMarker
-        });
-        kabupatenLayerMap['kab-<?= $row->id_kabupaten ?>'] = kabupatenLayer<?= $row->id_kabupaten ?>;
-        kabupatenLayers.addLayer(kabupatenLayer<?= $row->id_kabupaten ?>);
-    <?php
-      }
-    }
-    ?>
-
-    document.querySelectorAll('input[name="base-layer"]').forEach(function(input) {
-      input.addEventListener('change', function() {
-        setBaseLayer(this.value);
-      });
-    });
-
-    document.querySelectorAll('.toggle-kabupaten').forEach(function(input) {
-      input.addEventListener('change', function() {
-        var layerId = this.getAttribute('data-layer-id');
-        var layer = kabupatenLayerMap[layerId];
-        if (!layer) return;
-        if (this.checked) {
-          kabupatenLayers.addLayer(layer);
-        } else {
-          kabupatenLayers.removeLayer(layer);
-        }
-      });
-    });
-
-    // Toggle Hotspot
-    document.getElementById('toggle-hotspot').addEventListener('change', function() {
-      if (this.checked) {
-        map.addLayer(hotspotLayer);
-      } else {
-        map.removeLayer(hotspotLayer);
-      }
-    });
-
-    // Toggle Fire Spot
-    document.getElementById('toggle-firespot').addEventListener('change', function() {
-      if (this.checked) {
-        map.addLayer(firespotLayer);
-      } else {
-        map.removeLayer(firespotLayer);
-      }
-    });
-
-    setTimeout(function() {
-      try {
-        map.invalidateSize();
-      } catch (e) {
-        console.error(e);
-      }
-    }, 250);
   </script>
 </body>
 

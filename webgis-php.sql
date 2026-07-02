@@ -1,31 +1,8 @@
--- phpMyAdmin SQL Dump
--- version 5.2.2
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Jun 28, 2026 at 10:20 AM
--- Server version: 8.4.3
--- PHP Version: 8.2.31
+-- SQL schema for WebGIS Layanan Kesehatan Disabilitas Kota Banjarmasin
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `webgis-php`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `m_kabupaten`
---
 
 CREATE TABLE `m_kabupaten` (
   `id_kabupaten` int NOT NULL,
@@ -35,12 +12,6 @@ CREATE TABLE `m_kabupaten` (
   `warna_kabupaten` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `pengguna`
---
-
 CREATE TABLE `pengguna` (
   `id_pengguna` int NOT NULL,
   `nm_pengguna` varchar(20) NOT NULL,
@@ -48,112 +19,89 @@ CREATE TABLE `pengguna` (
   `level` enum('Admin','User') NOT NULL DEFAULT 'User'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `t_firespot`
---
-
-CREATE TABLE `t_firespot` (
-  `id_firespot` int NOT NULL,
-  `id_kabupaten` int NOT NULL,
-  `lokasi` varchar(255) NOT NULL,
-  `keterangan` text,
-  `lat` decimal(10,7) NOT NULL,
-  `lng` decimal(10,7) NOT NULL,
-  `tanggal` date NOT NULL,
-  `luas_terbakar` decimal(10,2) DEFAULT '0.00',
-  `status` enum('Aktif','Padam','Dalam Penanganan') DEFAULT 'Aktif',
-  `penyebab` varchar(150) DEFAULT NULL,
-  `marker` varchar(255) DEFAULT NULL,
+CREATE TABLE `tempat_layanan` (
+  `id` int NOT NULL,
+  `nama` varchar(150) NOT NULL,
+  `kategori` enum('Rumah Sakit','Puskesmas','Klinik','Komunitas Disabilitas') NOT NULL,
+  `alamat` text NOT NULL,
+  `latitude` decimal(10,7) NOT NULL,
+  `longitude` decimal(10,7) NOT NULL,
+  `telepon` varchar(30) DEFAULT NULL,
+  `deskripsi` text,
+  `foto` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
+CREATE TABLE `dokter` (
+  `id` int NOT NULL,
+  `tempat_layanan_id` int NOT NULL,
+  `nama` varchar(150) NOT NULL,
+  `alamat` text,
+  `spesialis` varchar(100) DEFAULT NULL,
+  `telepon` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Table structure for table `t_hotspot`
---
+CREATE TABLE `layanan` (
+  `id` int NOT NULL,
+  `tempat_layanan_id` int NOT NULL,
+  `nama_layanan` varchar(150) NOT NULL,
+  `keterangan` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `t_hotspot` (
-  `id_hotspot` int NOT NULL,
-  `id_kabupaten` int NOT NULL,
-  `lokasi` varchar(50) NOT NULL,
-  `keterangan` varchar(100) NOT NULL,
-  `lat` float(9,6) NOT NULL,
-  `lng` float(9,6) NOT NULL,
-  `tanggal` date NOT NULL,
-  `marker` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `penanggung_jawab` (
+  `id` int NOT NULL,
+  `tempat_layanan_id` int NOT NULL,
+  `nama` varchar(150) NOT NULL,
+  `jabatan` varchar(100) DEFAULT NULL,
+  `telepon` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `m_kabupaten`
---
 ALTER TABLE `m_kabupaten`
   ADD PRIMARY KEY (`id_kabupaten`);
 
---
--- Indexes for table `pengguna`
---
 ALTER TABLE `pengguna`
   ADD PRIMARY KEY (`id_pengguna`);
 
---
--- Indexes for table `t_firespot`
---
-ALTER TABLE `t_firespot`
-  ADD PRIMARY KEY (`id_firespot`),
-  ADD KEY `id_kabupaten` (`id_kabupaten`);
+ALTER TABLE `tempat_layanan`
+  ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `t_hotspot`
---
-ALTER TABLE `t_hotspot`
-  ADD PRIMARY KEY (`id_hotspot`);
+ALTER TABLE `dokter`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tempat_layanan_id` (`tempat_layanan_id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
+ALTER TABLE `layanan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tempat_layanan_id` (`tempat_layanan_id`);
 
---
--- AUTO_INCREMENT for table `m_kabupaten`
---
+ALTER TABLE `penanggung_jawab`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tempat_layanan_id` (`tempat_layanan_id`);
+
 ALTER TABLE `m_kabupaten`
   MODIFY `id_kabupaten` int NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `pengguna`
---
 ALTER TABLE `pengguna`
   MODIFY `id_pengguna` int NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `t_firespot`
---
-ALTER TABLE `t_firespot`
-  MODIFY `id_firespot` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tempat_layanan`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `t_hotspot`
---
-ALTER TABLE `t_hotspot`
-  MODIFY `id_hotspot` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `dokter`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
---
--- Constraints for dumped tables
---
+ALTER TABLE `layanan`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
---
--- Constraints for table `t_firespot`
---
-ALTER TABLE `t_firespot`
-  ADD CONSTRAINT `fk_firespot_kabupaten` FOREIGN KEY (`id_kabupaten`) REFERENCES `m_kabupaten` (`id_kabupaten`) ON DELETE CASCADE;
+ALTER TABLE `penanggung_jawab`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `dokter`
+  ADD CONSTRAINT `fk_dokter_tempat_layanan` FOREIGN KEY (`tempat_layanan_id`) REFERENCES `tempat_layanan` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `layanan`
+  ADD CONSTRAINT `fk_layanan_tempat_layanan` FOREIGN KEY (`tempat_layanan_id`) REFERENCES `tempat_layanan` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `penanggung_jawab`
+  ADD CONSTRAINT `fk_penanggung_jawab_tempat_layanan` FOREIGN KEY (`tempat_layanan_id`) REFERENCES `tempat_layanan` (`id`) ON DELETE CASCADE;
+
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

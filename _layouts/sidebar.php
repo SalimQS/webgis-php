@@ -26,38 +26,33 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header">NAVIGASI ADMIN</li>
         <li>
           <a href="<?=url('beranda')?>">
-            <i class="fa fa-dashboard"></i> <span>Beranda</span>
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
         <?php if ($session->get('level')=='Admin'): ?>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-folder"></i>
-            <span>Data Daerah</span>
+            <span>Master Data</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=url('kabupaten')?>"><i class="fa fa-circle-o"></i> Kabupaten</a></li>
+            <li><a href="<?=url('tempat_layanan')?>"><i class="fa fa-circle-o"></i> Tempat Layanan</a></li>
+            <li><a href="<?=url('dokter')?>"><i class="fa fa-circle-o"></i> Dokter</a></li>
+            <li><a href="<?=url('layanan')?>"><i class="fa fa-circle-o"></i> Layanan</a></li>
+            <li><a href="<?=url('penanggung_jawab')?>"><i class="fa fa-circle-o"></i> Penanggung Jawab</a></li>
           </ul>
         </li>
         <?php endif ?>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-sitemap"></i>
-            <span>Data Titik Lokasi</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+        <li>
+          <a href="<?=url('report')?>">
+            <i class="fa fa-file-pdf-o"></i> <span>Laporan Tempat Layanan</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=url('hotspot')?>"><i class="fa fa-circle-o"></i> Data Titik Rawan Terbakar</a></li>
-            <li><a href="<?=url('firespot')?>"><i class="fa fa-circle-o"></i> Data Titik Kebakaran</a></li>
-          </ul>
         </li>
         <li class="treeview">
           <a href="#">
@@ -77,11 +72,6 @@
             <li><a href="<?=url('leaflet-choroplet')?>"><i class="fa fa-circle-o"></i> Choroplet</a></li>
             <li><a href="<?=url('leaflet-routingmachine')?>"><i class="fa fa-circle-o"></i> Routing Machine</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="<?=url('report')?>">
-            <i class="fa fa-file-pdf-o"></i> <span>Report</span>
-          </a>
         </li>
         <li>
           <a href="<?=url('logout')?>">

@@ -4,16 +4,12 @@ if (!isset($section)) {
 }
 $sections = [
     'index' => 'Beranda',
-    'peta' => 'Peta Interaktif',
-    'statistik' => 'Statistik',
-    'metodologi' => 'Metodologi',
-    'referensi-penelitian' => 'Referensi Penelitian',
-    'informasi-kelompok' => 'Kelompok',
+    'peta' => 'Peta Layanan',
 ];
 $logged = isset($session) && $session->get('logged') === true;
 ?>
 <header class="topbar">
-    <a href="<?= url('dashboard') ?>" class="brand">Karhutla Banjarmasin<small>Sistem Informasi Geografis</small></a>
+    <a href="<?= url('dashboard') ?>" class="brand">Layanan Kesehatan Disabilitas<small>WebGIS Kota Banjarmasin</small></a>
     <nav>
         <?php foreach ($sections as $key => $label): ?>
             <?php $href = url('dashboard') . ($key === 'index' ? '' : '&section=' . $key); ?>
