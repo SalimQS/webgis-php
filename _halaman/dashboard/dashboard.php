@@ -21,7 +21,7 @@ $jumlahTempat = count($tempatLayanan);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Layanan Kesehatan Disabilitas Kota Banjarmasin</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=health-20260703">
 </head>
 
 <body>
@@ -33,7 +33,7 @@ $jumlahTempat = count($tempatLayanan);
         <div class="eyebrow">Kota Banjarmasin 2026</div>
         <h1>Pemetaan layanan kesehatan bagi <em>penyandang disabilitas</em>.</h1>
         <p class="lead">Aplikasi ini membantu masyarakat menemukan rumah sakit, puskesmas, klinik, dan komunitas yang menyediakan layanan terkait disabilitas di Kota Banjarmasin.</p>
-        <div style="display:flex;gap:12px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
           <a href="?halaman=dashboard&section=peta" class="btn">Buka Peta Layanan</a>
           <a href="#daftar-tempat" class="btn ghost">Cari Tempat</a>
         </div>
@@ -89,9 +89,9 @@ $jumlahTempat = count($tempatLayanan);
       <h2>Daftar tempat layanan kesehatan</h2>
     </div>
 
-    <form method="get" action="<?= base_url() ?>" style="display:flex;gap:10px;margin-bottom:22px;max-width:620px">
+    <form method="get" action="<?= base_url() ?>" class="search-row">
       <input type="hidden" name="halaman" value="dashboard">
-      <input type="text" name="q" value="<?= dash_e($q) ?>" placeholder="Cari nama tempat" style="flex:1;padding:13px 14px;border:1px solid var(--line);background:var(--paper)">
+      <input type="text" name="q" value="<?= dash_e($q) ?>" placeholder="Cari nama tempat">
       <button type="submit" class="btn">Cari</button>
     </form>
 

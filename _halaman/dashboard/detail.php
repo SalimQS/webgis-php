@@ -29,7 +29,7 @@ $mapsUrl = 'https://www.google.com/maps?q=' . urlencode($tempat->latitude . ',' 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= detail_e($tempat->nama) ?></title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=health-20260703">
 </head>
 <body>
 <?php include __DIR__ . '/navbar.php'; ?>
@@ -38,8 +38,8 @@ $mapsUrl = 'https://www.google.com/maps?q=' . urlencode($tempat->latitude . ',' 
     <div class="eyebrow"><?= detail_e($tempat->kategori) ?></div>
     <h2><?= detail_e($tempat->nama) ?></h2>
   </div>
-  <div class="grid-3">
-    <div class="card" style="grid-column:span 1">
+  <div class="detail-layout">
+    <div class="card">
       <?php if ($tempat->foto != '') { ?>
         <img src="<?= assets('unggah/tempat_layanan/' . $tempat->foto) ?>" alt="<?= detail_e($tempat->nama) ?>" style="width:100%;height:220px;object-fit:cover;margin-bottom:16px">
       <?php } ?>
@@ -48,7 +48,7 @@ $mapsUrl = 'https://www.google.com/maps?q=' . urlencode($tempat->latitude . ',' 
       <p style="margin-top:10px"><?= detail_e($tempat->deskripsi) ?></p>
       <a href="<?= $mapsUrl ?>" target="_blank" class="btn" style="margin-top:16px">Buka Google Maps</a>
     </div>
-    <div class="card" style="grid-column:span 2">
+    <div class="card">
       <div id="map" style="height:360px"></div>
     </div>
   </div>

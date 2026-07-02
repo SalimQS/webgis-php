@@ -5,6 +5,8 @@ if (!isset($section)) {
 $sections = [
     'index' => 'Beranda',
     'peta' => 'Peta Layanan',
+    'referensi-penelitian' => 'Referensi',
+    'informasi-kelompok' => 'Kelompok',
 ];
 $logged = isset($session) && $session->get('logged') === true;
 ?>

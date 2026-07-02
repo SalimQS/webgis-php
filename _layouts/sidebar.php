@@ -51,7 +51,7 @@
         <?php endif ?>
         <li>
           <a href="<?=url('report')?>">
-            <i class="fa fa-file-pdf-o"></i> <span>Laporan Tempat Layanan</span>
+            <i class="fa fa-file-pdf-o"></i> <span>Laporan</span>
           </a>
         </li>
         <li class="treeview">

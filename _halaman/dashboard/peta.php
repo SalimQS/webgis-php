@@ -22,7 +22,7 @@ $rows = $db->ObjectBuilder()->get('tempat_layanan');
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Peta Layanan Kesehatan Disabilitas</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=health-20260703">
 </head>
 
 <body>
@@ -34,7 +34,7 @@ $rows = $db->ObjectBuilder()->get('tempat_layanan');
         <form method="get" action="<?= base_url() ?>" class="control-group">
           <input type="hidden" name="halaman" value="dashboard">
           <input type="hidden" name="section" value="peta">
-          <select name="kategori" onchange="this.form.submit()" style="width:100%;padding:12px;border-radius:8px">
+          <select name="kategori" onchange="this.form.submit()" class="filter-select">
             <?php foreach ($kategoriList as $item) { ?>
               <option value="<?= peta_e($item) ?>" <?= $kategori == $item ? 'selected' : '' ?>><?= peta_e($item) ?></option>
             <?php } ?>
@@ -46,7 +46,7 @@ $rows = $db->ObjectBuilder()->get('tempat_layanan');
         <div class="panel-layers">
           <?php foreach ($rows as $row) { ?>
             <a class="layer-row" href="<?= url('dashboard') ?>&section=detail&id=<?= $row->id ?>">
-              <span class="swatch" style="background:#2f80ed"></span>
+              <span class="swatch" style="background:var(--support)"></span>
               <span><?= peta_e($row->nama) ?><br><small><?= peta_e($row->kategori) ?></small></span>
             </a>
           <?php } ?>
